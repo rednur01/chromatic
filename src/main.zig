@@ -1,0 +1,30 @@
+const std = @import("std");
+
+const Hex = @import("mod/colorspaces/Hex.zig");
+const Rgb = @import("mod/colorspaces/Rgb.zig");
+
+pub fn main() !void {
+    // Debug allocator for memory leak checks
+    var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
+    defer _ = debug_allocator.deinit();
+    const gpa = debug_allocator.allocator();
+
+    // Testing basic functionality works
+    const blue_hex: Hex = try .parse("#0000FF");
+    const blue_hex_str = try blue_hex.stringify();
+    std.debug.print("Blue hex: {s}\n", .{blue_hex_str});
+
+    const blue_rgb: Rgb = .fromHex(blue_hex);
+    const blue_rgb_str = try blue_rgb.stringify(gpa);
+    defer gpa.free(blue_rgb_str);
+    std.debug.print("Blue rgb: {s}\n", .{blue_rgb_str});
+
+    const green_rgb: Rgb = try .parse("rgb(0,255,0)");
+    const green_rgb_str = try green_rgb.stringify(gpa);
+    defer gpa.free(green_rgb_str);
+    std.debug.print("Green hex: {s}\n", .{green_rgb_str});
+
+    const green_hex: Hex = .fromRgb(green_rgb);
+    const green_hex_str = try green_hex.stringify();
+    std.debug.print("Green rgb: {s}\n", .{green_hex_str});
+}
