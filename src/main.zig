@@ -2,12 +2,15 @@ const std = @import("std");
 
 const Hex = @import("mod/colorspaces/Hex.zig");
 const Rgb = @import("mod/colorspaces/Rgb.zig");
+const Hsv = @import("mod/colorspaces/Hsv.zig");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
     // Debug allocator for memory leak checks
-    var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
-    defer _ = debug_allocator.deinit();
-    const gpa = debug_allocator.allocator();
+    // var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
+    // defer _ = debug_allocator.deinit();
+    // const gpa = debug_allocator.allocator();
+
+    const gpa = init.gpa;
 
     // Testing basic functionality works
     const blue_hex: Hex = try .parse("#0000FF");
@@ -27,4 +30,19 @@ pub fn main() !void {
     const green_hex: Hex = .fromRgb(green_rgb);
     const green_hex_str = try green_hex.stringify();
     std.debug.print("Green rgb: {s}\n", .{green_hex_str});
+
+    const green_hsv: Hsv = try .parse("hsv(240,0.5,0.5)");
+    const green_hsv_str = try green_hsv.stringify(gpa);
+    defer gpa.free(green_hsv_str);
+    std.debug.print("Green hsv: {s}\n", .{green_hsv_str});
+
+    const red_hsv: Hsv = .fromRgb(try .parse("rgb(255,0,0)"));
+    const red_hsv_str = try red_hsv.stringify(gpa);
+    defer gpa.free(red_hsv_str);
+    std.debug.print("Red hsv: {s}\n", .{red_hsv_str});
+
+    const red_rgb: Rgb = .fromHsv(red_hsv);
+    const red_rgb_str = try red_rgb.stringify(gpa);
+    defer gpa.free(red_rgb_str);
+    std.debug.print("Red rgb: {s}\n", .{red_rgb_str});
 }

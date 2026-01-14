@@ -1,15 +1,13 @@
 .{
-    .name = .pigment,
+    .name = .chromatic,
     .version = "0.0.0",
-    .fingerprint = 0x5eab2f8378669324,
-    .minimum_zig_version = "0.16.0-dev.1912+0cbaaa5eb",
+    .fingerprint = 0xd3f86d562c07e4fe,
+    .minimum_zig_version = "0.16.0-dev.2187+e2338edb4",
     .dependencies = .{},
     .paths = .{
         "build.zig",
         "build.zig.zon",
         "src",
-        // For example...
-        //"LICENSE",
-        //"README.md",
+        "README.md",
     },
 }

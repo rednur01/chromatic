@@ -63,3 +63,4 @@ fn isValidHexString(str: []const u8) bool {
 }
 
 // TODO: Write lots of unit tests
+// Or a fuzz test
