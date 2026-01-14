@@ -42,6 +42,7 @@ pub fn parse(str: []const u8) !Hsl {
     return hsl;
 }
 
+// Formula from https://www.rapidtables.com/convert/color/rgb-to-hsl.html
 pub fn fromRgb(rgb: Rgb) Hsl {
     var hsl: Hsl = undefined;
 

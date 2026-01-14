@@ -54,6 +54,7 @@ pub fn fromHex(hex: Hex) Rgb {
     return rgb;
 }
 
+// Formula from https://www.rapidtables.com/convert/color/hsv-to-rgb.html
 pub fn fromHsv(hsv: Hsv) Rgb {
     const h = hsv.h;
     const s = hsv.s;
@@ -100,6 +101,7 @@ pub fn fromHsv(hsv: Hsv) Rgb {
     };
 }
 
+// Formula from https://www.rapidtables.com/convert/color/hsl-to-rgb.html
 pub fn fromHsl(hsl: Hsl) Rgb {
     const h = hsl.h;
     const s = hsl.s;
