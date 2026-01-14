@@ -9,6 +9,7 @@ const allocPrint = std.fmt.allocPrint;
 const ColorError = @import("Color.zig").ColorError;
 const Hex = @import("Hex.zig");
 const Hsv = @import("Hsv.zig");
+const Hsl = @import("Hsl.zig");
 
 r: u8,
 g: u8,
@@ -61,6 +62,52 @@ pub fn fromHsv(hsv: Hsv) Rgb {
     const c = v * s;
     const x = c * (1 - @abs(@as(f64, @mod(h / 60, 2)) - 1));
     const m = v - c;
+
+    var r: f64 = undefined;
+    var g: f64 = undefined;
+    var b: f64 = undefined;
+
+    if (h < 60) {
+        r = c;
+        g = x;
+        b = 0;
+    } else if (h < 120) {
+        r = x;
+        g = c;
+        b = 0;
+    } else if (h < 180) {
+        r = 0;
+        g = c;
+        b = x;
+    } else if (h < 240) {
+        r = 0;
+        g = x;
+        b = c;
+    } else if (h < 300) {
+        r = x;
+        g = 0;
+        b = c;
+    } else {
+        r = c;
+        g = 0;
+        b = x;
+    }
+
+    return .{
+        .r = @intFromFloat((r + m) * 255),
+        .g = @intFromFloat((g + m) * 255),
+        .b = @intFromFloat((b + m) * 255),
+    };
+}
+
+pub fn fromHsl(hsl: Hsl) Rgb {
+    const h = hsl.h;
+    const s = hsl.s;
+    const l = hsl.l;
+
+    const c = 1 - @abs(2 * l - 1) * s;
+    const x = c * (1 - @abs(@as(f64, @mod(h / 60, 2)) - 1));
+    const m = l - (c / 2);
 
     var r: f64 = undefined;
     var g: f64 = undefined;

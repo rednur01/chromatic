@@ -3,6 +3,7 @@ const std = @import("std");
 const Hex = @import("mod/colorspaces/Hex.zig");
 const Rgb = @import("mod/colorspaces/Rgb.zig");
 const Hsv = @import("mod/colorspaces/Hsv.zig");
+const Hsl = @import("mod/colorspaces/Hsl.zig");
 
 pub fn main(init: std.process.Init) !void {
     // Debug allocator for memory leak checks
@@ -41,7 +42,12 @@ pub fn main(init: std.process.Init) !void {
     defer gpa.free(red_hsv_str);
     std.debug.print("Red hsv: {s}\n", .{red_hsv_str});
 
-    const red_rgb: Rgb = .fromHsv(red_hsv);
+    const red_hsl: Hsl = .fromRgb(try .parse("rgb(255,0,0)"));
+    const red_hsl_str = try red_hsl.stringify(gpa);
+    defer gpa.free(red_hsl_str);
+    std.debug.print("Red hsl: {s}\n", .{red_hsl_str});
+
+    const red_rgb: Rgb = .fromHsl(red_hsl);
     const red_rgb_str = try red_rgb.stringify(gpa);
     defer gpa.free(red_rgb_str);
     std.debug.print("Red rgb: {s}\n", .{red_rgb_str});
