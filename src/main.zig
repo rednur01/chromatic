@@ -6,11 +6,6 @@ const Hsv = @import("mod/colorspaces/Hsv.zig");
 const Hsl = @import("mod/colorspaces/Hsl.zig");
 
 pub fn main(init: std.process.Init) !void {
-    // Debug allocator for memory leak checks
-    // var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
-    // defer _ = debug_allocator.deinit();
-    // const gpa = debug_allocator.allocator();
-
     const gpa = init.gpa;
 
     // Testing basic functionality works
