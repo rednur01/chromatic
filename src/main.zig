@@ -1,5 +1,4 @@
 const std = @import("std");
-
 const Hex = @import("mod/colorspaces/Hex.zig");
 const Rgb = @import("mod/colorspaces/Rgb.zig");
 const Hsv = @import("mod/colorspaces/Hsv.zig");
