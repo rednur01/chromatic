@@ -71,5 +71,5 @@ pub fn fromRgb(rgb: Rgb) Oklab {
 
 /// Caller owns memory
 pub fn stringify(self: Oklab, gpa: Allocator) ![]u8 {
-    return try allocPrint(gpa, "oklab({},{},{})", .{ self.l, self.a, self.b });
+    return try allocPrint(gpa, "oklab({:.3},{:.3},{:.3})", .{ self.l, self.a, self.b });
 }

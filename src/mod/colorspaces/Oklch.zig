@@ -64,5 +64,5 @@ pub fn fromRgb(rgb: Rgb) Oklch {
 
 /// Caller owns memory
 pub fn stringify(self: Oklch, gpa: Allocator) ![]u8 {
-    return try allocPrint(gpa, "oklch({},{},{})", .{ self.l, self.c, self.h });
+    return try allocPrint(gpa, "oklch({:.3},{:.3},{:.3})", .{ self.l, self.c, self.h });
 }
