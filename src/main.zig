@@ -5,6 +5,7 @@ const Rgb = @import("mod/colorspaces/Rgb.zig");
 const Hsv = @import("mod/colorspaces/Hsv.zig");
 const Hsl = @import("mod/colorspaces/Hsl.zig");
 const Oklab = @import("mod/colorspaces/Oklab.zig");
+const Oklch = @import("mod/colorspaces/Oklch.zig");
 
 pub fn main(init: std.process.Init) !void {
     const gpa = init.gpa;
@@ -57,4 +58,14 @@ pub fn main(init: std.process.Init) !void {
     const cyan_rgb_str = try cyan_rgb.stringify(gpa);
     defer gpa.free(cyan_rgb_str);
     std.debug.print("Cyan rgb: {s}\n", .{cyan_rgb_str});
+
+    const purple_oklch: Oklch = .fromRgb(try .parse("rgb(255,0,255)"));
+    const purple_oklch_str = try purple_oklch.stringify(gpa);
+    defer gpa.free(purple_oklch_str);
+    std.debug.print("Purple oklch: {s}\n", .{purple_oklch_str});
+
+    const purple_rgb: Rgb = .fromOklch(purple_oklch);
+    const purple_rgb_str = try purple_rgb.stringify(gpa);
+    defer gpa.free(purple_rgb_str);
+    std.debug.print("Purple rgb: {s}\n", .{purple_rgb_str});
 }

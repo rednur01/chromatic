@@ -3,6 +3,9 @@
 const Rgb = @This();
 
 const std = @import("std");
+const pi = std.math.pi;
+const cos = std.math.cos;
+const sin = std.math.sin;
 const Allocator = std.mem.Allocator;
 const parseInt = std.fmt.parseInt;
 const allocPrint = std.fmt.allocPrint;
@@ -11,6 +14,7 @@ const Hex = @import("Hex.zig");
 const Hsv = @import("Hsv.zig");
 const Hsl = @import("Hsl.zig");
 const Oklab = @import("Oklab.zig");
+const Oklch = @import("Oklch.zig");
 
 r: u8,
 g: u8,
@@ -168,6 +172,19 @@ pub fn fromOklab(oklab: Oklab) Rgb {
         .g = @intFromFloat(@round(g)),
         .b = @intFromFloat(@round(b)),
     };
+}
+
+// Formula from https://observablehq.com/@coulterg/oklab-oklch-color-functions
+pub fn fromOklch(oklch: Oklch) Rgb {
+    var oklab: Oklab = undefined;
+
+    const h_radians = oklch.h * pi / 180;
+
+    oklab.l = oklch.l;
+    oklab.a = oklch.c * cos(h_radians);
+    oklab.b = oklch.c * sin(h_radians);
+
+    return .fromOklab(oklab);
 }
 
 /// Caller owns memory
