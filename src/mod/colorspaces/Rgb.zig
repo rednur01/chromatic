@@ -6,6 +6,8 @@ const std = @import("std");
 const pi = std.math.pi;
 const cos = std.math.cos;
 const sin = std.math.sin;
+const pow = std.math.pow;
+const clamp = std.math.clamp;
 const Allocator = std.mem.Allocator;
 const parseInt = std.fmt.parseInt;
 const allocPrint = std.fmt.allocPrint;
@@ -163,14 +165,18 @@ pub fn fromOklab(oklab: Oklab) Rgb {
     const m = m1 * m1 * m1;
     const s = s1 * s1 * s1;
 
-    const r = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-    const g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-    const b = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
+    var r = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+    var g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+    var b = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
+
+    r = linearToSrgb(clamp(r, 0.0, 1.0));
+    g = linearToSrgb(clamp(g, 0.0, 1.0));
+    b = linearToSrgb(clamp(b, 0.0, 1.0));
 
     return .{
-        .r = @intFromFloat(@round(r)),
-        .g = @intFromFloat(@round(g)),
-        .b = @intFromFloat(@round(b)),
+        .r = @intFromFloat(@round(r * 255)),
+        .g = @intFromFloat(@round(g * 255)),
+        .b = @intFromFloat(@round(b * 255)),
     };
 }
 
@@ -214,6 +220,14 @@ fn validateRgbString(str: []const u8) bool {
     }
 
     return true;
+}
+
+pub fn srgbToLinear(c: f64) f64 {
+    return if (c <= 0.04045) c / 12.92 else pow(f64, (c + 0.055) / 1.055, 2.4);
+}
+
+pub fn linearToSrgb(c: f64) f64 {
+    return if (c <= 0.0031308) 12.92 * c else 1.055 * pow(f64, c, 1.0 / 2.4) - 0.055;
 }
 
 // TODO: Write lots of unit tests

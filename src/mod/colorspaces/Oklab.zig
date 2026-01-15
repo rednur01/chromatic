@@ -46,9 +46,13 @@ pub fn parse(str: []const u8) !Oklab {
 pub fn fromRgb(rgb: Rgb) Oklab {
     var oklab: Oklab = undefined;
 
-    const r: f64 = @floatFromInt(rgb.r);
-    const g: f64 = @floatFromInt(rgb.g);
-    const b: f64 = @floatFromInt(rgb.b);
+    const r_srgb = @as(f64, @floatFromInt(rgb.r)) / 255;
+    const g_srgb = @as(f64, @floatFromInt(rgb.g)) / 255;
+    const b_srgb = @as(f64, @floatFromInt(rgb.b)) / 255;
+
+    const r = Rgb.srgbToLinear(r_srgb);
+    const g = Rgb.srgbToLinear(g_srgb);
+    const b = Rgb.srgbToLinear(b_srgb);
 
     const l = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
     const m = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
