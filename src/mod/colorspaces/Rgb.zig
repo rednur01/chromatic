@@ -10,6 +10,7 @@ const ColorError = @import("Color.zig").ColorError;
 const Hex = @import("Hex.zig");
 const Hsv = @import("Hsv.zig");
 const Hsl = @import("Hsl.zig");
+const Oklab = @import("Oklab.zig");
 
 r: u8,
 g: u8,
@@ -145,6 +146,27 @@ pub fn fromHsl(hsl: Hsl) Rgb {
         .r = @intFromFloat((r + m) * 255),
         .g = @intFromFloat((g + m) * 255),
         .b = @intFromFloat((b + m) * 255),
+    };
+}
+
+// Formula from https://bottosson.github.io/posts/oklab/
+pub fn fromOklab(oklab: Oklab) Rgb {
+    const l1 = oklab.l + 0.3963377774 * oklab.a + 0.2158037573 * oklab.b;
+    const m1 = oklab.l - 0.1055613458 * oklab.a - 0.0638541728 * oklab.b;
+    const s1 = oklab.l - 0.0894841775 * oklab.a - 1.2914855480 * oklab.b;
+
+    const l = l1 * l1 * l1;
+    const m = m1 * m1 * m1;
+    const s = s1 * s1 * s1;
+
+    const r = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+    const g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+    const b = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
+
+    return .{
+        .r = @intFromFloat(@round(r)),
+        .g = @intFromFloat(@round(g)),
+        .b = @intFromFloat(@round(b)),
     };
 }
 
