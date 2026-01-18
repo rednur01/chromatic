@@ -72,5 +72,5 @@ pub fn fromRgb(rgb: Rgb) Hsv {
 
 /// Caller owns memory
 pub fn stringify(self: Hsv, gpa: Allocator) ![]u8 {
-    return try allocPrint(gpa, "hsv({},{},{})", .{ self.h, self.s, self.v });
+    return allocPrint(gpa, "hsv({},{},{})", .{ self.h, self.s, self.v });
 }

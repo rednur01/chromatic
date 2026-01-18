@@ -10,9 +10,9 @@ const allocPrint = std.fmt.allocPrint;
 const ColorError = @import("Color.zig").ColorError;
 const Rgb = @import("Rgb.zig");
 
-l: f64,
-a: f64,
-b: f64,
+l: f64, // [0,1]
+a: f64, // unbounded
+b: f64, // unbounded
 
 pub fn parse(str: []const u8) !Oklab {
     // TODO: Input validation
@@ -71,5 +71,5 @@ pub fn fromRgb(rgb: Rgb) Oklab {
 
 /// Caller owns memory
 pub fn stringify(self: Oklab, gpa: Allocator) ![]u8 {
-    return try allocPrint(gpa, "oklab({:.3},{:.3},{:.3})", .{ self.l, self.a, self.b });
+    return allocPrint(gpa, "oklab({:.3},{:.3},{:.3})", .{ self.l, self.a, self.b });
 }

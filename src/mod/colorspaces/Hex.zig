@@ -7,9 +7,8 @@ const Allocator = std.mem.Allocator;
 const ColorError = @import("Color.zig").ColorError;
 const Rgb = @import("Rgb.zig");
 
-// rrggbb
 // TODO: Support alpha channel
-value: u24,
+value: u24, // rrggbb
 
 pub fn parse(str: []const u8) !Hex {
     if (!isValidHexString(str)) return ColorError.InvalidInput;

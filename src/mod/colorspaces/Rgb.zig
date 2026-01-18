@@ -18,9 +18,9 @@ const Hsl = @import("Hsl.zig");
 const Oklab = @import("Oklab.zig");
 const Oklch = @import("Oklch.zig");
 
-r: u8,
-g: u8,
-b: u8,
+r: u8, // [0,255]
+g: u8, // [0,255]
+b: u8, // [0,255]
 
 pub fn parse(str: []const u8) !Rgb {
     if (!validateRgbString(str)) return ColorError.InvalidInput;
@@ -195,7 +195,7 @@ pub fn fromOklch(oklch: Oklch) Rgb {
 
 /// Caller owns memory
 pub fn stringify(self: Rgb, gpa: Allocator) ![]u8 {
-    return try allocPrint(gpa, "rgb({},{},{})", .{ self.r, self.g, self.b });
+    return allocPrint(gpa, "rgb({},{},{})", .{ self.r, self.g, self.b });
 }
 
 // TODO: Print useful errors to stderr
