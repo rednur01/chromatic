@@ -11,6 +11,7 @@ const clamp = std.math.clamp;
 const Allocator = std.mem.Allocator;
 const parseInt = std.fmt.parseInt;
 const allocPrint = std.fmt.allocPrint;
+const trim = std.mem.trim;
 const ColorError = @import("Color.zig").ColorError;
 const Hex = @import("Hex.zig");
 const Hsv = @import("Hsv.zig");
@@ -22,28 +23,36 @@ r: u8, // [0,255]
 g: u8, // [0,255]
 b: u8, // [0,255]
 
+/// Input must be of the format "rgb(u8,u8,u8)" or "rgb(u8 u8 u8)"
+/// Whitespaces are allowed after commas
 pub fn parse(str: []const u8) !Rgb {
-    if (!validateRgbString(str)) return ColorError.InvalidInput;
+    // if (!validateRgbString(str)) return ColorError.InvalidInput;
 
     const has_rgb_decl = std.mem.eql(u8, str[0..4], "rgb(");
-    const start_idx: usize = if (has_rgb_decl) 4 else 0;
+    if (!has_rgb_decl) return ColorError.InvalidInput;
+
     const closing_paren_idx = std.mem.findScalar(u8, str, ')');
+    if (closing_paren_idx == null) return ColorError.InvalidInput;
 
-    if (has_rgb_decl and closing_paren_idx == null) return ColorError.InvalidInput;
-
-    const end_idx: usize = if (has_rgb_decl) closing_paren_idx.? else str.len;
+    const start_idx: usize = 4;
+    const end_idx: usize = closing_paren_idx.?;
     const colors = str[start_idx..end_idx];
 
     var rgb: Rgb = undefined;
 
-    var iter = std.mem.splitScalar(u8, colors, ',');
+    const comma_count = std.mem.countScalar(u8, str, ',');
+    const sep: u8 = if (comma_count == 2) ',' else ' ';
+
+    var iter = std.mem.splitScalar(u8, colors, sep);
     var i: usize = 0;
+
+    const trim_chars = [_]u8{' '};
 
     while (iter.next()) |val| : (i += 1) {
         switch (i) {
             0 => rgb.r = try parseInt(u8, val, 10),
-            1 => rgb.g = try parseInt(u8, val, 10),
-            2 => rgb.b = try parseInt(u8, val, 10),
+            1 => rgb.g = try parseInt(u8, trim(u8, val, &trim_chars), 10),
+            2 => rgb.b = try parseInt(u8, trim(u8, val, &trim_chars), 10),
             else => unreachable,
         }
     }

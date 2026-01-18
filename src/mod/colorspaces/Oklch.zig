@@ -9,6 +9,7 @@ const pi = std.math.pi;
 const Allocator = std.mem.Allocator;
 const parseFloat = std.fmt.parseFloat;
 const allocPrint = std.fmt.allocPrint;
+const trim = std.mem.trim;
 const ColorError = @import("Color.zig").ColorError;
 const Rgb = @import("Rgb.zig");
 const Oklab = @import("Oklab.zig");
@@ -45,8 +46,8 @@ pub fn parse(str: []const u8) !Oklch {
     while (iter.next()) |val| : (i += 1) {
         switch (i) {
             0 => oklch.l = try parseFloat(f64, val[0 .. val.len - 1]) / 100,
-            1 => oklch.c = try parseFloat(f64, std.mem.trim(u8, val, &trim_chars)),
-            2 => oklch.h = try parseFloat(f64, std.mem.trim(u8, val, &trim_chars)),
+            1 => oklch.c = try parseFloat(f64, trim(u8, val, &trim_chars)),
+            2 => oklch.h = try parseFloat(f64, trim(u8, val, &trim_chars)),
             else => unreachable,
         }
     }
