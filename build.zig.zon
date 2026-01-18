@@ -1,6 +1,6 @@
 .{
     .name = .chromatic,
-    .version = "0.0.0",
+    .version = "0.1.0",
     .fingerprint = 0xd3f86d562c07e4fe,
     .minimum_zig_version = "0.16.0-dev.2187+e2338edb4",
     .dependencies = .{},

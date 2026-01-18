@@ -2,6 +2,8 @@
 /// Hue [0,360] Saturation [0,1] Lightness [0,1]
 const Hsl = @This();
 
+// TODO: Color as interface
+
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 const parseFloat = std.fmt.parseFloat;

@@ -2,6 +2,8 @@
 /// A polar coordinate representation of Oklab
 const Oklch = @This();
 
+// TODO: Color as interface
+
 const std = @import("std");
 const sqrt = std.math.sqrt;
 const atan2 = std.math.atan2;

@@ -2,6 +2,8 @@
 /// Commonly used in css
 const Hex = @This();
 
+// TODO: Color as interface
+
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 const ColorError = @import("Color.zig").ColorError;

@@ -2,6 +2,8 @@
 /// 0-256 values for red, green, blue
 const Rgb = @This();
 
+// TODO: Color as interface
+
 const std = @import("std");
 const pi = std.math.pi;
 const cos = std.math.cos;

@@ -2,6 +2,8 @@
 /// https://bottosson.github.io/posts/oklab/
 const Oklab = @This();
 
+// TODO: Color as interface
+
 const std = @import("std");
 const cbrt = std.math.cbrt;
 const Allocator = std.mem.Allocator;
