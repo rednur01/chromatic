@@ -4,6 +4,7 @@ const Init = std.process.Init;
 const Tw = @import("mod/colorsystems/Tw.zig");
 const help_msg = @import("mod/cli/help.zig").help_msg;
 const invalid_msg = @import("mod/cli/invalid.zig").invalid_msg;
+const build_options = @import("build_options");
 
 pub fn main(init: Init) !void {
     // TODO: Make a real arg parser or wait for zig stdlib
@@ -18,6 +19,8 @@ pub fn main(init: Init) !void {
         std.debug.print("{s}\n", .{invalid_msg});
     } else if (eql(u8, args[1], "help")) {
         std.debug.print("{s}\n", .{help_msg});
+    } else if (eql(u8, args[1], "version")) {
+        std.debug.print("{s}\n", .{build_options.version});
     } else if (eql(u8, args[1], "tw")) {
         if (args.len < 3) {
             std.debug.print("{s}\n", .{invalid_msg});
